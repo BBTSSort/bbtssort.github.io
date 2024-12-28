@@ -1,4 +1,4 @@
-# Broken by the Scream (BBTS) Song Sorter
+# Broken By The Scream (BBTS) Song Sorter
 
 https://bbtssort.github.io/
 
