@@ -1,11 +1,7 @@
-# sakura gakuin sort /bmsg/ edition
+# Broken by the Scream (BBTS) Song Sorter
 
-http://sakurasort.github.io/
+https://bbtssort.github.io/
 
-add new members in js/fnc_data_v2.js and images in img
+This is a fork of [Sakura Sort](https://github.com/sakurasort/sakurasort.github.io). Thanks to the contributors there for providing this for us to use.
 
-
-### to do
-
-* add extended universe
-* match new site design http://www.sakuragakuin.jp/ (probably cant be bothered)
+Please read the [CONTRIBUTING.md](./.github/CONTRIBUTING.md) if you'd like to contribute.
