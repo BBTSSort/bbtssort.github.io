@@ -194,10 +194,12 @@ main {
   cursor: pointer;
   transition: transform var(--duration) var(--easing),
               border-color var(--duration) var(--easing),
+              box-shadow var(--duration) var(--easing),
               opacity var(--duration) var(--easing);
 }
 .album-card:hover {
   border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
   transform: translateY(-2px);
 }
 .album-card input[type="checkbox"] {
