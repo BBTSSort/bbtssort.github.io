@@ -1,5 +1,6 @@
 import { ALBUMS, buildSongList } from "./data.js";
 import { SongSort } from "./sort.js";
+import * as htmlToImage from "https://cdn.jsdelivr.net/npm/html-to-image@1.11.13/+esm";
 
 const els = {
   phaseSelect: document.getElementById("phase-select"),
@@ -22,6 +23,7 @@ const els = {
   viewToggle: document.querySelector("#phase-results .view-toggle"),
   sortToggle: document.getElementById("sortToggle"),
   rawTextBtn: document.getElementById("rawTextBtn"),
+  exportImgBtn: document.getElementById("exportImgBtn"),
   restartBtn: document.getElementById("restartBtn"),
   rawDialog: document.getElementById("rawDialog"),
   rawText: document.getElementById("rawText"),
@@ -289,6 +291,33 @@ function setupResultsPhase() {
   });
   els.closeDialogBtn.addEventListener("click", () => els.rawDialog.close());
   els.restartBtn.addEventListener("click", () => location.reload());
+
+  els.exportImgBtn.addEventListener("click", async () => {
+    const original = els.exportImgBtn.textContent;
+    els.exportImgBtn.disabled = true;
+    els.exportImgBtn.textContent = "Generating…";
+    try {
+      if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready;
+      }
+      const dataUrl = await htmlToImage.toPng(els.resultsCard, {
+        backgroundColor: "#0a0a0a",
+        pixelRatio: 2,
+        cacheBust: true,
+      });
+      const date = new Date().toISOString().slice(0, 10);
+      const link = document.createElement("a");
+      link.download = `bbts-song-ranking-${date}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error("Export failed:", err);
+      alert("Couldn't generate the image. Take a screenshot instead?");
+    } finally {
+      els.exportImgBtn.disabled = false;
+      els.exportImgBtn.textContent = original;
+    }
+  });
 }
 
 els.selectAll.checked = true;
