@@ -34,6 +34,23 @@ const els = {
 let sort = null;
 let albumSort = "desc";
 
+const SINGLES = ALBUMS.filter((a) => a.single);
+const REGULAR_ALBUMS = ALBUMS.filter((a) => !a.single);
+const SINGLES_TILE_ID = "__singles__";
+
+// Synthetic tile that bundles all singles. Always pinned to the end of the grid.
+const SINGLES_TILE = SINGLES.length === 0 ? null : {
+  id: SINGLES_TILE_ID,
+  title: "Singles",
+  cover: "img/bandphoto.jpg",
+  songCount: SINGLES.reduce((n, s) => n + s.songs.length, 0),
+};
+
+function gridEntries() {
+  const albums = albumSort === "desc" ? [...REGULAR_ALBUMS].reverse() : REGULAR_ALBUMS;
+  return SINGLES_TILE ? [...albums, SINGLES_TILE] : [...albums];
+}
+
 function showPhase(name) {
   els.phaseSelect.hidden = name !== "select";
   els.phaseSort.hidden = name !== "sort";
@@ -53,22 +70,21 @@ function renderAlbumGrid() {
   }
 
   els.albumGrid.replaceChildren();
-  const list = albumSort === "desc" ? [...ALBUMS].reverse() : ALBUMS;
 
-  for (const album of list) {
+  for (const entry of gridEntries()) {
     const label = document.createElement("label");
     label.className = "album-card";
 
     const cb = document.createElement("input");
     cb.type = "checkbox";
     cb.name = "album";
-    cb.value = album.id;
-    cb.checked = prevChecked.has(album.id) ? prevChecked.get(album.id) : true;
+    cb.value = entry.id;
+    cb.checked = prevChecked.has(entry.id) ? prevChecked.get(entry.id) : true;
     if (!cb.checked) label.classList.add("album-card--off");
 
     const img = document.createElement("img");
-    img.src = album.cover;
-    img.alt = album.title;
+    img.src = entry.cover;
+    img.alt = entry.title;
     img.loading = "lazy";
 
     const meta = document.createElement("div");
@@ -76,17 +92,23 @@ function renderAlbumGrid() {
 
     const title = document.createElement("span");
     title.className = "album-card__title";
-    title.textContent = album.title;
+    title.textContent = entry.title;
+    meta.append(title);
 
-    const year = document.createElement("span");
-    year.className = "album-card__year";
-    const songWord = album.songs.length === 1 ? "song" : "songs";
-    year.textContent = `${album.year} · ${album.songs.length} ${songWord}`;
-
-    meta.append(title, year);
+    const subParts = [];
+    if (entry.year != null) subParts.push(String(entry.year));
+    const songCount = entry.songs?.length ?? entry.songCount ?? 0;
+    if (songCount > 0) subParts.push(songCount === 1 ? "1 song" : `${songCount} songs`);
+    if (subParts.length > 0) {
+      const sub = document.createElement("span");
+      sub.className = "album-card__year";
+      sub.textContent = subParts.join(" · ");
+      meta.append(sub);
+    }
 
     cb.addEventListener("change", () => {
       label.classList.toggle("album-card--off", !cb.checked);
+      updateSelectAllLabel();
     });
 
     label.append(cb, img, meta);
@@ -94,12 +116,22 @@ function renderAlbumGrid() {
   }
 }
 
+function updateSelectAllLabel() {
+  const checkboxes = els.albumGrid.querySelectorAll('input[name="album"]');
+  const allChecked = [...checkboxes].every((cb) => cb.checked);
+  els.selectAll.textContent = allChecked ? "Deselect all" : "Select all";
+}
+
 function setupSelectionPhase() {
-  els.selectAll.addEventListener("change", () => {
-    for (const cb of els.albumGrid.querySelectorAll('input[name="album"]')) {
-      cb.checked = els.selectAll.checked;
-      cb.closest(".album-card").classList.toggle("album-card--off", !cb.checked);
+  els.selectAll.addEventListener("click", () => {
+    const checkboxes = [...els.albumGrid.querySelectorAll('input[name="album"]')];
+    const allChecked = checkboxes.every((cb) => cb.checked);
+    const next = !allChecked;
+    for (const cb of checkboxes) {
+      cb.checked = next;
+      cb.closest(".album-card").classList.toggle("album-card--off", !next);
     }
+    updateSelectAllLabel();
   });
 
   els.sortToggle.addEventListener("click", (e) => {
@@ -118,11 +150,14 @@ function setupSelectionPhase() {
 }
 
 function startSorting() {
-  const selected = new Set(
-    [...els.albumGrid.querySelectorAll('input[name="album"]:checked')].map(
-      (c) => c.value
-    )
-  );
+  const selected = new Set();
+  for (const c of els.albumGrid.querySelectorAll('input[name="album"]:checked')) {
+    if (c.value === SINGLES_TILE_ID) {
+      for (const s of SINGLES) selected.add(s.id);
+    } else {
+      selected.add(c.value);
+    }
+  }
   if (selected.size === 0) {
     alert("Please pick at least one album.");
     return;
@@ -343,8 +378,8 @@ function setupResultsPhase() {
   });
 }
 
-els.selectAll.checked = true;
 renderAlbumGrid();
+updateSelectAllLabel();
 setupSelectionPhase();
 setupSortPhase();
 setupResultsPhase();

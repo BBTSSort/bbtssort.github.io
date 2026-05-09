@@ -4,6 +4,8 @@
 //   year   - release year (used to sort albums chronologically)
 //   cover  - path to cover image, relative to the page
 //   songs  - array of song titles in track order (duplicates across albums are fine)
+//   single - (optional) true if this is a standalone single — gets bundled into the
+//            "Singles" tile on the album grid instead of getting its own tile.
 //
 // Albums are listed alphabetically by title in this file for easier maintenance.
 // At runtime they are sorted by year on export, so file order does not affect the UI.

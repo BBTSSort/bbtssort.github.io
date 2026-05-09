@@ -50,6 +50,7 @@ No code changes needed elsewhere. Push your changes to GitHub and you're done.
 | `year`  | yes      | Integer release year. Used for chronological sorting on the album-select page.                                  |
 | `cover` | yes      | Path relative to the repo root. The UI prepends nothing — write the full `img/albums/...` path.                 |
 | `songs` | yes      | Array of strings, in track order. Duplicates across albums are fine; each instance is treated as its own entry. |
+| `single` | no      | Set to `true` for standalone singles. They get bundled into one "Singles" tile on the album grid instead of getting their own tile. Omit for full albums, mini-albums, and EPs. |
 
 
 ## Adding songs to an existing album
