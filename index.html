@@ -58,8 +58,8 @@
             <span>Select all</span>
           </label>
           <div id="sortToggle" class="view-toggle" role="group" aria-label="Sort albums by date">
-            <button type="button" data-sort="asc" class="view-toggle__btn">Oldest first</button>
-            <button type="button" data-sort="desc" class="view-toggle__btn is-active">Newest first</button>
+            <button type="button" data-sort="asc" class="view-toggle__btn" aria-pressed="false">Oldest first</button>
+            <button type="button" data-sort="desc" class="view-toggle__btn is-active" aria-pressed="true">Newest first</button>
           </div>
         </div>
       </div>
@@ -93,8 +93,8 @@
     <section id="phase-results" class="phase" hidden>
       <div class="results-toolbar">
         <div class="view-toggle" role="group" aria-label="Result view">
-          <button type="button" data-view="detailed" class="view-toggle__btn is-active">Detailed</button>
-          <button type="button" data-view="compact" class="view-toggle__btn">Compact</button>
+          <button type="button" data-view="detailed" class="view-toggle__btn is-active" aria-pressed="true">Detailed</button>
+          <button type="button" data-view="compact" class="view-toggle__btn" aria-pressed="false">Compact</button>
         </div>
       </div>
 

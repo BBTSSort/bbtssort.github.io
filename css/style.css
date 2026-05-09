@@ -2,8 +2,8 @@
   --bg: #0a0a0a;
   --surface: #161616;
   --surface-2: #1f1f1f;
-  --border: #2a2a2a;
-  --border-strong: #3d3d3d;
+  --border: #5c5c5c;
+  --border-strong: #757575;
   --text: #f5f5f5;
   --text-dim: #9a9a9a;
   --accent: #2e5cb8;
@@ -223,7 +223,19 @@ main {
   transform: translateY(-2px);
 }
 .album-card input[type="checkbox"] {
-  display: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.album-card:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 .album-card img {
   display: block;

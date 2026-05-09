@@ -104,7 +104,9 @@ function setupSelectionPhase() {
     const btn = e.target.closest(".view-toggle__btn");
     if (!btn || btn.dataset.sort === albumSort) return;
     for (const b of els.sortToggle.querySelectorAll(".view-toggle__btn")) {
-      b.classList.toggle("is-active", b === btn);
+      const active = b === btn;
+      b.classList.toggle("is-active", active);
+      b.setAttribute("aria-pressed", String(active));
     }
     albumSort = btn.dataset.sort;
     renderAlbumGrid();
@@ -261,7 +263,9 @@ function setupResultsPhase() {
     const btn = e.target.closest(".view-toggle__btn");
     if (!btn) return;
     for (const b of els.viewToggle.querySelectorAll(".view-toggle__btn")) {
-      b.classList.toggle("is-active", b === btn);
+      const active = b === btn;
+      b.classList.toggle("is-active", active);
+      b.setAttribute("aria-pressed", String(active));
     }
     els.resultsCard.dataset.view = btn.dataset.view;
   });
