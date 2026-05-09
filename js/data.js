@@ -5,34 +5,10 @@
 //   cover  - path to cover image, relative to the page
 //   songs  - array of song titles in track order (duplicates across albums are fine)
 //
-// Albums are sorted by year on export, so insertion order in this array does not matter.
+// Albums are listed alphabetically by title in this file for easier maintenance.
+// At runtime they are sorted by year on export, so file order does not affect the UI.
 
 const RAW_ALBUMS = [
-  {
-    id: "limited-edition-single",
-    title: "Limited Edition Single (会場限定版シングル)",
-    year: 2017, // venue-exclusive; exact date undocumented, predates SCREAMING RHAPSODY
-    cover: "img/albums/limitedEditionSingle.png",
-    songs: [
-      "Oh! My! ME・GA・MIに恋してる!",
-      "Breeder Breeder",
-    ],
-  },
-  {
-    id: "screaming-rhapsody",
-    title: "SCREAMING RHAPSODY",
-    year: 2017,
-    cover: "img/albums/screamingRhapsody.jpg",
-    songs: [
-      "夢花火",
-      "恋ドラ!?",
-      "走れ!なでしこ!",
-      "わたしはわたしのままだよ",
-      "ヒカリ",
-      "Breeder Breeder",
-      "オトコとオンナ",
-    ],
-  },
   {
     id: "an-aliens-portrait",
     title: "AN ALIEN'S PORTRAIT",
@@ -51,6 +27,29 @@ const RAW_ALBUMS = [
       "Message",
       "サヨナラバースデー",
       "空駆ける風のように",
+    ],
+  },
+  {
+    id: "bbts-extended",
+    title: "Broken By The Scream 〜extended〜 (Limited Edition)",
+    year: 2021,
+    cover: "img/albums/bbtsExtended.png",
+    songs: [
+      "逆転の鐘は鳴る",
+      "Breeder Breeder",
+      "オトコとオンナ",
+      "めんぶれ",
+      "セツナフープ",
+    ],
+  },
+  {
+    id: "limited-edition-single",
+    title: "Limited Edition Single (会場限定版シングル)",
+    year: 2017, // venue-exclusive; exact date undocumented, predates SCREAMING RHAPSODY
+    cover: "img/albums/limitedEditionSingle.png",
+    songs: [
+      "Oh! My! ME・GA・MIに恋してる!",
+      "Breeder Breeder",
     ],
   },
   {
@@ -74,16 +73,16 @@ const RAW_ALBUMS = [
     ],
   },
   {
-    id: "bbts-extended",
-    title: "Broken By The Scream 〜extended〜 (Limited Edition)",
-    year: 2021,
-    cover: "img/albums/bbtsExtended.png",
+    id: "remake-them-joy",
+    title: "ReMake Them Joy",
+    year: 2024,
+    cover: "img/albums/remakeThemJoy.jpg",
     songs: [
-      "逆転の鐘は鳴る",
-      "Breeder Breeder",
-      "オトコとオンナ",
-      "めんぶれ",
-      "セツナフープ",
+      "夢花火",
+      "Do・Do・N・Pa!!",
+      "サヨナラバースデー",
+      "Message",
+      "月光可憐ストライプ",
     ],
   },
   {
@@ -104,6 +103,40 @@ const RAW_ALBUMS = [
       "Hang in there",
       "逆転の鐘は鳴る (RiC mix)",
       "ボクらの未来",
+    ],
+  },
+  {
+    id: "screaming-rhapsody",
+    title: "SCREAMING RHAPSODY",
+    year: 2017,
+    cover: "img/albums/screamingRhapsody.jpg",
+    songs: [
+      "夢花火",
+      "恋ドラ!?",
+      "走れ!なでしこ!",
+      "わたしはわたしのままだよ",
+      "ヒカリ",
+      "Breeder Breeder",
+      "オトコとオンナ",
+    ],
+  },
+  {
+    id: "solar-strain",
+    title: "Solar Strain",
+    year: 2025,
+    cover: "img/albums/solarStrain.jpg",
+    songs: [
+      "アンドロメダ (Andromeda)",
+      "こっち向いてアモーレ (Kochi Muite Amore)",
+      "ショコラ・ジ・エンド (Chocolat the End)",
+      "トラブルメーカー (Troublemaker)",
+      "サンタクロースの恋人 (Santa Claus no Koibito)",
+      "Wonderful World",
+      "ダイイングメッセージ (Dying Message)",
+      "Queen of the World",
+      "月光可憐ストライプ (Gekko Karen Stripe)",
+      "朧月 -Oborozuki-",
+      "追憶のナスカ (Tsuioku no Nazca)",
     ],
   },
   {
@@ -134,41 +167,9 @@ const RAW_ALBUMS = [
       "ボクらの未来 （Live ver.)",
     ],
   },
-  {
-    id: "remake-them-joy",
-    title: "ReMake Them Joy",
-    year: 2024,
-    cover: "img/albums/remakeThemJoy.jpg",
-    songs: [
-      "夢花火",
-      "Do・Do・N・Pa!!",
-      "サヨナラバースデー",
-      "Message",
-      "月光可憐ストライプ",
-    ],
-  },
-  {
-    id: "solar-strain",
-    title: "Solar Strain",
-    year: 2025,
-    cover: "img/albums/solarStrain.jpg",
-    songs: [
-      "アンドロメダ (Andromeda)",
-      "こっち向いてアモーレ (Kochi Muite Amore)",
-      "ショコラ・ジ・エンド (Chocolat the End)",
-      "トラブルメーカー (Troublemaker)",
-      "サンタクロースの恋人 (Santa Claus no Koibito)",
-      "Wonderful World",
-      "ダイイングメッセージ (Dying Message)",
-      "Queen of the World",
-      "月光可憐ストライプ (Gekko Karen Stripe)",
-      "朧月 -Oborozuki-",
-      "追憶のナスカ (Tsuioku no Nazca)",
-    ],
-  },
 ];
 
-// Sort.sort is stable, so albums sharing a year preserve their RAW_ALBUMS order.
+// Array.sort is stable, so albums sharing a year preserve their RAW_ALBUMS order.
 export const ALBUMS = [...RAW_ALBUMS].sort((a, b) => a.year - b.year);
 
 export function buildSongList(selectedAlbumIds) {
