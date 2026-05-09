@@ -170,6 +170,7 @@ main {
 }
 @media (max-width: 760px) {
   .phase__intro { white-space: normal; }
+  #exportImgBtn { display: none; }
 }
 .phase__heading {
   font-size: 18px;

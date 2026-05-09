@@ -296,24 +296,47 @@ function setupResultsPhase() {
     const original = els.exportImgBtn.textContent;
     els.exportImgBtn.disabled = true;
     els.exportImgBtn.textContent = "Generating…";
+    let objectUrl = null;
     try {
       if (document.fonts && document.fonts.ready) {
         await document.fonts.ready;
       }
-      const dataUrl = await htmlToImage.toPng(els.resultsCard, {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const blob = await htmlToImage.toBlob(els.resultsCard, {
         backgroundColor: "#0a0a0a",
-        pixelRatio: 2,
+        pixelRatio: dpr,
         cacheBust: true,
       });
+      if (!blob) throw new Error("Empty image blob");
+
       const date = new Date().toISOString().slice(0, 10);
+      const filename = `bbts-song-ranking-${date}.png`;
+      const file = new File([blob], filename, { type: "image/png" });
+
+      // Mobile: native share sheet (Save to Photos, send to app, etc.)
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], title: "My BBTS Song Ranking" });
+          return;
+        } catch (err) {
+          if (err.name === "AbortError") return;
+          // Fall through to download fallback if share failed for another reason
+        }
+      }
+
+      // Desktop / fallback: trigger a download
+      objectUrl = URL.createObjectURL(blob);
       const link = document.createElement("a");
-      link.download = `bbts-song-ranking-${date}.png`;
-      link.href = dataUrl;
+      link.download = filename;
+      link.href = objectUrl;
+      document.body.appendChild(link);
       link.click();
+      link.remove();
     } catch (err) {
       console.error("Export failed:", err);
       alert("Couldn't generate the image. Take a screenshot instead?");
     } finally {
+      if (objectUrl) setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
       els.exportImgBtn.disabled = false;
       els.exportImgBtn.textContent = original;
     }
