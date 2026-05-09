@@ -360,8 +360,53 @@ progress::-moz-progress-bar { background: var(--accent); }
 @media (max-width: 760px) {
   .cards {
     grid-template-columns: 1fr;
+    gap: 8px;
   }
-  .cards__middle { order: 2; flex-direction: row !important; }
+  .cards__middle {
+    order: 2;
+    flex-direction: row !important;
+    justify-content: center;
+    gap: 8px;
+  }
+  .cards__middle .btn {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+  .card {
+    min-height: 0;
+    padding: 10px;
+    gap: 12px;
+    flex-direction: row;
+    text-align: left;
+    align-items: center;
+  }
+  .card__img {
+    width: 80px;
+    max-width: 80px;
+    flex-shrink: 0;
+  }
+  .card__text { gap: 2px; }
+  .card__title {
+    font-size: 14px;
+    line-height: 1.25;
+  }
+  .card__album {
+    font-size: 11px;
+  }
+  .prompt {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  .progress {
+    margin-bottom: 12px;
+  }
+  .progress__stats {
+    margin-bottom: 6px;
+    font-size: 12px;
+  }
+  main {
+    padding: 12px 14px 16px;
+  }
 }
 
 .card {
@@ -392,6 +437,12 @@ progress::-moz-progress-bar { background: var(--accent); }
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: var(--radius-sm);
+}
+.card__text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
 }
 .card__title {
   font-size: 18px;
