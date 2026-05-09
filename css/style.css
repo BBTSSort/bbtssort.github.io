@@ -201,39 +201,7 @@ main {
   transform: translateY(-2px);
 }
 .album-card input[type="checkbox"] {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 1;
-  width: 21px;
-  height: 21px;
-  margin: 0;
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  background-color: rgba(10, 10, 10, 0.75);
-  border: 1px solid #fff;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6),
-              inset 0 0 0 1px rgba(0, 0, 0, 0.4);
-  transition: background-color var(--duration) var(--easing),
-              border-color var(--duration) var(--easing),
-              transform var(--duration) var(--easing);
-}
-.album-card input[type="checkbox"]:hover {
-  border-color: var(--accent-hover);
-  transform: scale(1.05);
-}
-.album-card input[type="checkbox"]:checked {
-  background-color: var(--accent);
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'><path d='M3 8.5l3.5 3.5L13 5'/></svg>");
-  background-size: 75%;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-.album-card input[type="checkbox"]:focus-visible {
-  outline: 2px solid var(--accent-hover);
-  outline-offset: 3px;
+  display: none;
 }
 .album-card img {
   display: block;
