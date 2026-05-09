@@ -1,6 +1,6 @@
 import { ALBUMS, buildSongList } from "./data.js";
 import { SongSort } from "./sort.js";
-import * as htmlToImage from "https://cdn.jsdelivr.net/npm/html-to-image@1.11.13/+esm";
+import * as htmlToImage from "./vendor/html-to-image.js";
 
 const els = {
   phaseSelect: document.getElementById("phase-select"),
@@ -22,6 +22,7 @@ const els = {
   resultsCard: document.getElementById("resultsCard"),
   viewToggle: document.querySelector("#phase-results .view-toggle"),
   sortToggle: document.getElementById("sortToggle"),
+  selectionCount: document.getElementById("selectionCount"),
   rawTextBtn: document.getElementById("rawTextBtn"),
   exportImgBtn: document.getElementById("exportImgBtn"),
   restartBtn: document.getElementById("restartBtn"),
@@ -43,7 +44,7 @@ const SINGLES_TILE = SINGLES.length === 0 ? null : {
   id: SINGLES_TILE_ID,
   title: "Singles",
   cover: "img/bandphoto.jpg",
-  songCount: SINGLES.reduce((n, s) => n + s.songs.length, 0),
+  songs: SINGLES.flatMap((s) => s.songs),
 };
 
 function gridEntries() {
@@ -63,6 +64,10 @@ function escapeHTML(s) {
   );
 }
 
+function fullSongTitle(item) {
+  return item.translation ? `${item.title} (${item.translation})` : item.title;
+}
+
 function renderAlbumGrid() {
   const prevChecked = new Map();
   for (const cb of els.albumGrid.querySelectorAll('input[name="album"]')) {
@@ -72,6 +77,9 @@ function renderAlbumGrid() {
   els.albumGrid.replaceChildren();
 
   for (const entry of gridEntries()) {
+    const wrap = document.createElement("div");
+    wrap.className = "album-card-wrap";
+
     const label = document.createElement("label");
     label.className = "album-card";
 
@@ -109,10 +117,64 @@ function renderAlbumGrid() {
     cb.addEventListener("change", () => {
       label.classList.toggle("album-card--off", !cb.checked);
       updateSelectAllLabel();
+      updateSelectionCount();
     });
 
     label.append(cb, img, meta);
-    els.albumGrid.appendChild(label);
+    wrap.appendChild(label);
+
+    if (Array.isArray(entry.songs) && entry.songs.length > 0) {
+      const popover = document.createElement("div");
+      popover.className = "album-card__popover";
+      popover.setAttribute("aria-hidden", "true");
+
+      const heading = document.createElement("div");
+      heading.className = "album-card__popover-title";
+      heading.textContent = entry.title;
+      popover.appendChild(heading);
+
+      const ol = document.createElement("ol");
+      for (const song of entry.songs) {
+        const li = document.createElement("li");
+        const container = document.createElement("div");
+        container.className = "album-card__popover-song";
+
+        const main = document.createElement("span");
+        main.className = "album-card__popover-song-main";
+        main.textContent = song.title;
+        container.appendChild(main);
+
+        if (song.translation) {
+          const sub = document.createElement("span");
+          sub.className = "album-card__popover-song-sub";
+          sub.textContent = song.translation;
+          container.appendChild(sub);
+        }
+
+        li.appendChild(container);
+        ol.appendChild(li);
+      }
+      popover.appendChild(ol);
+      wrap.appendChild(popover);
+    }
+
+    els.albumGrid.appendChild(wrap);
+  }
+
+  updatePopoverSides();
+  updateSelectionCount();
+}
+
+function updatePopoverSides() {
+  const viewportCenter = window.innerWidth / 2;
+  for (const wrap of els.albumGrid.querySelectorAll(".album-card-wrap")) {
+    const rect = wrap.getBoundingClientRect();
+    const wrapCenter = rect.left + rect.width / 2;
+    if (wrapCenter > viewportCenter) {
+      wrap.dataset.side = "right";
+    } else {
+      delete wrap.dataset.side;
+    }
   }
 }
 
@@ -120,6 +182,29 @@ function updateSelectAllLabel() {
   const checkboxes = els.albumGrid.querySelectorAll('input[name="album"]');
   const allChecked = [...checkboxes].every((cb) => cb.checked);
   els.selectAll.textContent = allChecked ? "Deselect all" : "Select all";
+}
+
+function selectedAlbumIds() {
+  const ids = new Set();
+  for (const c of els.albumGrid.querySelectorAll('input[name="album"]:checked')) {
+    if (c.value === SINGLES_TILE_ID) {
+      for (const s of SINGLES) ids.add(s.id);
+    } else {
+      ids.add(c.value);
+    }
+  }
+  return ids;
+}
+
+function updateSelectionCount() {
+  const songs = buildSongList(selectedAlbumIds());
+  const n = songs.length;
+  let label;
+  if (n === 0) label = "No albums selected";
+  else if (n === 1) label = "1 song";
+  else label = `${n} songs`;
+  els.selectionCount.textContent = label;
+  els.startBtn.disabled = n < 2;
 }
 
 function setupSelectionPhase() {
@@ -132,6 +217,7 @@ function setupSelectionPhase() {
       cb.closest(".album-card").classList.toggle("album-card--off", !next);
     }
     updateSelectAllLabel();
+    updateSelectionCount();
   });
 
   els.sortToggle.addEventListener("click", (e) => {
@@ -150,14 +236,7 @@ function setupSelectionPhase() {
 }
 
 function startSorting() {
-  const selected = new Set();
-  for (const c of els.albumGrid.querySelectorAll('input[name="album"]:checked')) {
-    if (c.value === SINGLES_TILE_ID) {
-      for (const s of SINGLES) selected.add(s.id);
-    } else {
-      selected.add(c.value);
-    }
-  }
+  const selected = selectedAlbumIds();
   if (selected.size === 0) {
     alert("Please pick at least one album.");
     return;
@@ -185,10 +264,17 @@ function cardContent(card, item) {
   const title = document.createElement("span");
   title.className = "card__title";
   title.textContent = item.title;
+  text.append(title);
+  if (item.translation) {
+    const translation = document.createElement("span");
+    translation.className = "card__translation";
+    translation.textContent = item.translation;
+    text.append(translation);
+  }
   const album = document.createElement("span");
   album.className = "card__album";
   album.textContent = item.album.title;
-  text.append(title, album);
+  text.append(album);
   card.append(img, text);
 }
 
@@ -243,11 +329,20 @@ function buildPodiumCard({ rank, item }, place) {
   title.className = "podium-card__title";
   title.textContent = item.title;
 
+  card.append(badge, img, title);
+
+  if (item.translation) {
+    const translation = document.createElement("span");
+    translation.className = "podium-card__translation";
+    translation.textContent = item.translation;
+    card.append(translation);
+  }
+
   const album = document.createElement("span");
   album.className = "podium-card__album";
   album.textContent = item.album.title;
+  card.append(album);
 
-  card.append(badge, img, title, album);
   return card;
 }
 
@@ -270,10 +365,17 @@ function buildResultCell({ rank, item }) {
   const title = document.createElement("span");
   title.className = "result-cell__title";
   title.textContent = item.title;
+  text.append(title);
+  if (item.translation) {
+    const translation = document.createElement("span");
+    translation.className = "result-cell__translation";
+    translation.textContent = item.translation;
+    text.append(translation);
+  }
   const album = document.createElement("span");
   album.className = "result-cell__album";
   album.textContent = item.album.title;
-  text.append(title, album);
+  text.append(album);
 
   li.append(rankEl, img, text);
   return li;
@@ -310,7 +412,7 @@ function setupResultsPhase() {
   els.rawTextBtn.addEventListener("click", () => {
     const ranked = sort.results();
     els.rawText.value = ranked
-      .map(({ rank, item }) => `${rank}. ${item.title} — ${item.album.title}`)
+      .map(({ rank, item }) => `${rank}. ${fullSongTitle(item)} — ${item.album.title}`)
       .join("\n");
     els.rawDialog.showModal();
   });
@@ -384,3 +486,9 @@ setupSelectionPhase();
 setupSortPhase();
 setupResultsPhase();
 showPhase("select");
+
+let resizeTimer = null;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(updatePopoverSides, 100);
+});

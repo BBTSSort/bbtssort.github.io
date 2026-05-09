@@ -3,7 +3,10 @@
 //   title  - human-readable album name (shown in UI)
 //   year   - release year (used to sort albums chronologically)
 //   cover  - path to cover image, relative to the page
-//   songs  - array of song titles in track order (duplicates across albums are fine)
+//   songs  - array of song objects in track order. Each song is { title, translation? }:
+//              title       — the song's primary title (Japanese for most BBTS tracks)
+//              translation — (optional) English / romaji rendering shown as subtext
+//            Duplicate titles across albums are fine; each instance is treated separately.
 //   single - (optional) true if this is a standalone single — gets bundled into the
 //            "Singles" tile on the album grid instead of getting its own tile.
 //
@@ -17,18 +20,18 @@ const RAW_ALBUMS = [
     year: 2018,
     cover: "img/albums/anAliensPortrait.jpg",
     songs: [
-      "恋は乙女の泣きどころ",
-      "ジャッジメント!!",
-      "Looking for",
-      "繋いだ星座のラブレター",
-      "裸の太陽",
-      "I wish...",
-      "Do・Do・N・Pa!!",
-      "oh!my!ME・GA・MIに恋してる!",
-      "泣いて泣いて泣きまくれ",
-      "Message",
-      "サヨナラバースデー",
-      "空駆ける風のように",
+      { title: "恋は乙女の泣きどころ", translation: "Koi wa Otome no Nakidokoro" },
+      { title: "ジャッジメント!!", translation: "Judgment!!" },
+      { title: "Looking for" },
+      { title: "繋いだ星座のラブレター", translation: "Tsunaida Seiza no Love Letter" },
+      { title: "裸の太陽", translation: "Hadaka no Taiyou" },
+      { title: "I wish..." },
+      { title: "Do・Do・N・Pa!!" },
+      { title: "oh!my!ME・GA・MIに恋してる!", translation: "Oh! My! Megami ni Koishiteru!" },
+      { title: "泣いて泣いて泣きまくれ", translation: "Naite Naite Nakimakure" },
+      { title: "Message" },
+      { title: "サヨナラバースデー", translation: "Sayonara Birthday" },
+      { title: "空駆ける風のように", translation: "Sora Kakeru Kaze no You ni" },
     ],
   },
   {
@@ -37,11 +40,11 @@ const RAW_ALBUMS = [
     year: 2021,
     cover: "img/albums/bbtsExtended.png",
     songs: [
-      "逆転の鐘は鳴る",
-      "Breeder Breeder",
-      "オトコとオンナ",
-      "めんぶれ",
-      "セツナフープ",
+      { title: "逆転の鐘は鳴る", translation: "Gyakuten no Kane wa Naru" },
+      { title: "Breeder Breeder" },
+      { title: "オトコとオンナ", translation: "Otoko to Onna" },
+      { title: "めんぶれ", translation: "Mental Break" },
+      { title: "セツナフープ", translation: "Setsuna Hoop" },
     ],
   },
   {
@@ -50,8 +53,8 @@ const RAW_ALBUMS = [
     year: 2017, // venue-exclusive; exact date undocumented, predates SCREAMING RHAPSODY
     cover: "img/albums/limitedEditionSingle.png",
     songs: [
-      "Oh! My! ME・GA・MIに恋してる!",
-      "Breeder Breeder",
+      { title: "Oh! My! ME・GA・MIに恋してる!", translation: "Oh! My! Megami ni Koishiteru!" },
+      { title: "Breeder Breeder" },
     ],
   },
   {
@@ -60,18 +63,18 @@ const RAW_ALBUMS = [
     year: 2019,
     cover: "img/albums/noisyNightFever.jpg",
     songs: [
-      "アイハキミノモノ",
-      "七色スクランブル",
-      "∞ハートビート",
-      "Over The Sea",
-      "KI・RA・I !!",
-      "知らないキミと真夏の夜空",
-      "フェニックス",
-      "Snowlight Fantasy",
-      "Last minute",
-      "GoodnightはKissのあと",
-      "ハルウララ",
-      "宝物",
+      { title: "アイハキミノモノ", translation: "Ai wa Kimi no Mono" },
+      { title: "七色スクランブル", translation: "Nanairo Scramble" },
+      { title: "∞ハートビート", translation: "Infinity Heartbeat" },
+      { title: "Over The Sea" },
+      { title: "KI・RA・I !!" },
+      { title: "知らないキミと真夏の夜空", translation: "Shiranai Kimi to Manatsu no Yozora" },
+      { title: "フェニックス", translation: "Phoenix" },
+      { title: "Snowlight Fantasy" },
+      { title: "Last minute" },
+      { title: "GoodnightはKissのあと", translation: "Goodnight wa Kiss no Ato" },
+      { title: "ハルウララ", translation: "Haru Urara" },
+      { title: "宝物", translation: "Takaramono" },
     ],
   },
   {
@@ -80,11 +83,11 @@ const RAW_ALBUMS = [
     year: 2024,
     cover: "img/albums/remakeThemJoy.jpg",
     songs: [
-      "夢花火",
-      "Do・Do・N・Pa!!",
-      "サヨナラバースデー",
-      "Message",
-      "月光可憐ストライプ",
+      { title: "夢花火", translation: "Yumehanabi" },
+      { title: "Do・Do・N・Pa!!" },
+      { title: "サヨナラバースデー", translation: "Sayonara Birthday" },
+      { title: "Message" },
+      { title: "月光可憐ストライプ", translation: "Gekko Karen Stripe" },
     ],
   },
   {
@@ -93,18 +96,18 @@ const RAW_ALBUMS = [
     year: 2022,
     cover: "img/albums/riseIntoChaos.jpg",
     songs: [
-      "感情クロスカウンター (RiC mix)",
-      "TOKYO RIDE",
-      "I tai no...",
-      "セツナフープ (RiC mix)",
-      "ココロ、晴レ晴レ",
-      "パノラマ",
-      "メラメラセニョリータ",
-      "あの夏の蜃気楼",
-      "キラキラスプラッシュ!!",
-      "Hang in there",
-      "逆転の鐘は鳴る (RiC mix)",
-      "ボクらの未来",
+      { title: "感情クロスカウンター (RiC mix)", translation: "Kanjou Cross Counter (RiC mix)" },
+      { title: "TOKYO RIDE" },
+      { title: "I tai no..." },
+      { title: "セツナフープ (RiC mix)", translation: "Setsuna Hoop (RiC mix)" },
+      { title: "ココロ、晴レ晴レ", translation: "Kokoro, Hare Hare" },
+      { title: "パノラマ", translation: "Panorama" },
+      { title: "メラメラセニョリータ", translation: "Mera Mera Señorita" },
+      { title: "あの夏の蜃気楼", translation: "Ano Natsu no Shinkirou" },
+      { title: "キラキラスプラッシュ!!", translation: "Kira Kira Splash!!" },
+      { title: "Hang in there" },
+      { title: "逆転の鐘は鳴る (RiC mix)", translation: "Gyakuten no Kane wa Naru (RiC mix)" },
+      { title: "ボクらの未来", translation: "Bokura no Mirai" },
     ],
   },
   {
@@ -113,13 +116,13 @@ const RAW_ALBUMS = [
     year: 2017,
     cover: "img/albums/screamingRhapsody.jpg",
     songs: [
-      "夢花火",
-      "恋ドラ!?",
-      "走れ!なでしこ!",
-      "わたしはわたしのままだよ",
-      "ヒカリ",
-      "Breeder Breeder",
-      "オトコとオンナ",
+      { title: "夢花火", translation: "Yumehanabi" },
+      { title: "恋ドラ!?", translation: "Koi Dora!?" },
+      { title: "走れ!なでしこ!", translation: "Hashire! Nadeshiko!" },
+      { title: "わたしはわたしのままだよ", translation: "Watashi wa Watashi no Mama da yo" },
+      { title: "ヒカリ", translation: "Hikari" },
+      { title: "Breeder Breeder" },
+      { title: "オトコとオンナ", translation: "Otoko to Onna" },
     ],
   },
   {
@@ -128,17 +131,17 @@ const RAW_ALBUMS = [
     year: 2025,
     cover: "img/albums/solarStrain.jpg",
     songs: [
-      "アンドロメダ (Andromeda)",
-      "こっち向いてアモーレ (Kochi Muite Amore)",
-      "ショコラ・ジ・エンド (Chocolat the End)",
-      "トラブルメーカー (Troublemaker)",
-      "サンタクロースの恋人 (Santa Claus no Koibito)",
-      "Wonderful World",
-      "ダイイングメッセージ (Dying Message)",
-      "Queen of the World",
-      "月光可憐ストライプ (Gekko Karen Stripe)",
-      "朧月 -Oborozuki-",
-      "追憶のナスカ (Tsuioku no Nazca)",
+      { title: "アンドロメダ", translation: "Andromeda" },
+      { title: "こっち向いてアモーレ", translation: "Kochi Muite Amore" },
+      { title: "ショコラ・ジ・エンド", translation: "Chocolat the End" },
+      { title: "トラブルメーカー", translation: "Troublemaker" },
+      { title: "サンタクロースの恋人", translation: "Santa Claus no Koibito" },
+      { title: "Wonderful World" },
+      { title: "ダイイングメッセージ", translation: "Dying Message" },
+      { title: "Queen of the World" },
+      { title: "月光可憐ストライプ", translation: "Gekko Karen Stripe" },
+      { title: "朧月", translation: "Oborozuki" },
+      { title: "追憶のナスカ", translation: "Tsuioku no Nazca" },
     ],
   },
   {
@@ -147,12 +150,12 @@ const RAW_ALBUMS = [
     year: 2023,
     cover: "img/albums/whiteWaterParkA.jpg",
     songs: [
-      "Rising sun feat.サンシャイン池崎",
-      "くちびるにロマンス",
-      "陽炎 feat.Isam(from MAKE MY DAY)＆アイガーゴイル(from アイリフドーパ)",
-      "荒れた海路はキミ日和",
-      "ライカ ライカ",
-      "パノラマ (Live ver.)",
+      { title: "Rising sun feat.サンシャイン池崎", translation: "Rising sun feat. Sunshine Ikezaki" },
+      { title: "くちびるにロマンス", translation: "Kuchibiru ni Romance" },
+      { title: "陽炎 feat.Isam (from MAKE MY DAY) ＆アイガーゴイル(from アイリフドーパ)", translation: "Kagerou feat. Isam (from MAKE MY DAY) & Eigergoyle (from AILIFDOPA)" },
+      { title: "荒れた海路はキミ日和", translation: "Areta Kairo wa Kimi Biyori" },
+      { title: "ライカ ライカ", translation: "Laika Laika" },
+      { title: "パノラマ (Live ver.)", translation: "Panorama (Live ver.)" },
     ],
   },
   {
@@ -161,12 +164,12 @@ const RAW_ALBUMS = [
     year: 2023,
     cover: "img/albums/whiteWaterParkB.jpg",
     songs: [
-      "Rising sun feat.サンシャイン池崎",
-      "くちびるにロマンス",
-      "陽炎 feat.Isam（from MAKE MY DAY）＆アイガーゴイル（from アイリフドーパ）",
-      "荒れた海路はキミ日和",
-      "ライカ ライカ",
-      "ボクらの未来 （Live ver.)",
+      { title: "Rising sun feat.サンシャイン池崎", translation: "Rising sun feat. Sunshine Ikezaki" },
+      { title: "くちびるにロマンス", translation: "Kuchibiru ni Romance" },
+      { title: "陽炎 feat.Isam（from MAKE MY DAY）＆アイガーゴイル（from アイリフドーパ）", translation: "Kagerou feat. Isam (from MAKE MY DAY) & Eigergoyle (from AILIFDOPA)" },
+      { title: "荒れた海路はキミ日和", translation: "Areta Kairo wa Kimi Biyori" },
+      { title: "ライカ ライカ", translation: "Laika Laika" },
+      { title: "ボクらの未来 (Live ver.)", translation: "Bokura no Mirai (Live ver.)" },
     ],
   },
 ];
@@ -179,11 +182,11 @@ export function buildSongList(selectedAlbumIds) {
   const seen = new Set();
   for (const album of ALBUMS) {
     if (!selectedAlbumIds.has(album.id)) continue;
-    for (const title of album.songs) {
-      const key = title.trim().toLowerCase();
+    for (const song of album.songs) {
+      const key = song.title.trim().toLowerCase();
       if (seen.has(key)) continue;
       seen.add(key);
-      songs.push({ title, album });
+      songs.push({ title: song.title, translation: song.translation, album });
     }
   }
   return songs;

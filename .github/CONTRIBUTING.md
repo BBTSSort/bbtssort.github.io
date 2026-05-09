@@ -22,17 +22,17 @@ Open `js/data.js` and append a new object to `RAW_ALBUMS`. Order inside the arra
     year: 2025,
     cover: "img/albums/solarStrain.jpg",
     songs: [
-      "アンドロメダ (Andromeda)",
-      "こっち向いてアモーレ (Kochi Muite Amore)",
-      "ショコラ・ジ・エンド (Chocolat the End)",
-      "トラブルメーカー (Troublemaker)",
-      "サンタクロースの恋人 (Santa Claus no Koibito)",
-      "Wonderful World",
-      "ダイイングメッセージ (Dying Message)",
-      "Queen of the World",
-      "月光可憐ストライプ (Gekko Karen Stripe)",
-      "朧月 -Oborozuki-",
-      "追憶のナスカ (Tsuioku no Nazca)",
+      { title: "アンドロメダ", translation: "Andromeda" },
+      { title: "こっち向いてアモーレ", translation: "Kochi Muite Amore" },
+      { title: "ショコラ・ジ・エンド", translation: "Chocolat the End" },
+      { title: "トラブルメーカー", translation: "Troublemaker" },
+      { title: "サンタクロースの恋人", translation: "Santa Claus no Koibito" },
+      { title: "Wonderful World" },
+      { title: "ダイイングメッセージ", translation: "Dying Message" },
+      { title: "Queen of the World" },
+      { title: "月光可憐ストライプ", translation: "Gekko Karen Stripe" },
+      { title: "朧月", translation: "Oborozuki" },
+      { title: "追憶のナスカ", translation: "Tsuioku no Nazca" },
     ],
   },
 ```
@@ -49,7 +49,7 @@ No code changes needed elsewhere. Push your changes to GitHub and you're done.
 | `title` | yes      | Human-readable title. Japanese OK. Include track-edition suffixes like `【初回盤】` or `【Type-A】` verbatim.          |
 | `year`  | yes      | Integer release year. Used for chronological sorting on the album-select page.                                  |
 | `cover` | yes      | Path relative to the repo root. The UI prepends nothing — write the full `img/albums/...` path.                 |
-| `songs` | yes      | Array of strings, in track order. Duplicates across albums are fine; each instance is treated as its own entry. |
+| `songs` | yes      | Array of song objects in track order, shape `{ title, translation? }`. `title` is the primary title (Japanese for most BBTS tracks). Optional `translation` is shown as dim subtext (English/romaji). Duplicate titles across albums are fine; each instance is treated as its own entry. |
 | `single` | no      | Set to `true` for standalone singles. They get bundled into one "Singles" tile on the album grid instead of getting their own tile. Omit for full albums, mini-albums, and EPs. |
 
 

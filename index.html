@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'">
   <title>Broken By The Scream Song Sorter</title>
   <meta name="description" content="Sort songs from Broken By The Scream head-to-head until a final ranking emerges.">
 
@@ -64,6 +65,7 @@
       <div id="albumGrid" class="albums"></div>
 
       <div class="select-actions">
+        <span class="select-actions__count" id="selectionCount"></span>
         <button type="button" id="startBtn" class="btn btn--primary">Start Sorting →</button>
       </div>
     </section>
@@ -98,7 +100,7 @@
 
       <div id="resultsCard" class="results-card" data-view="detailed">
         <header class="results-card__header">
-          <h1 class="results-card__title">My BBTS Song Ranking</h1>
+          <h2 class="results-card__title">My BBTS Song Ranking</h2>
           <p class="results-card__subtitle">brokenbythescream.jp · bbtssort.github.io</p>
         </header>
         <div id="podium" class="podium"></div>

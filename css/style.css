@@ -21,6 +21,7 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; overflow-x: clip; }
+html { scroll-padding-bottom: 96px; }
 
 body {
   background: var(--bg);
@@ -219,7 +220,7 @@ main {
     display: none;
   }
   .albums-header__actions .view-toggle__btn {
-    padding: 5px 10px;
+    padding: 6px 10px;
     font-size: 12px;
   }
 }
@@ -228,6 +229,7 @@ main {
 .albums {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-auto-rows: 1fr;
   gap: 16px;
   margin-bottom: 24px;
 }
@@ -270,12 +272,14 @@ main {
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
+  flex-shrink: 0;
 }
 .album-card__meta {
   display: flex;
   flex-direction: column;
   gap: 4px;
   padding: 12px 14px;
+  flex: 1;
 }
 .album-card__title {
   font-size: 14px;
@@ -287,6 +291,7 @@ main {
   color: var(--text-dim);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.04em;
+  margin-top: auto;
 }
 .album-card--off {
   opacity: 0.4;
@@ -294,18 +299,126 @@ main {
 }
 .album-card--off:hover { opacity: 0.7; }
 
-.select-actions {
+/* Tracklist popover that appears above an album card on hover/focus */
+.album-card-wrap {
+  position: relative;
   display: flex;
-  justify-content: flex-end;
-  padding: 16px 0 0;
+  flex-direction: column;
+}
+.album-card-wrap .album-card {
+  flex: 1;
+}
+.album-card__popover {
+  position: absolute;
+  top: 0;
+  left: calc(100% + 8px);
+  width: 240px;
+  z-index: 50;
+  background: var(--surface-2);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-4px);
+  pointer-events: none;
+  transition: opacity var(--duration) var(--easing),
+              transform var(--duration) var(--easing),
+              visibility 0s linear var(--duration);
+}
+.album-card-wrap[data-side="right"] .album-card__popover {
+  left: auto;
+  right: calc(100% + 8px);
+  transform: translateX(4px);
+}
+.album-card-wrap:hover .album-card__popover,
+.album-card-wrap:focus-within .album-card__popover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  pointer-events: auto;
+  transition: opacity var(--duration) var(--easing) 500ms,
+              transform var(--duration) var(--easing) 500ms,
+              visibility 0s linear 500ms;
+}
+.album-card__popover-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  word-break: break-word;
+}
+.album-card__popover ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: track;
+}
+.album-card__popover li {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 3px 0;
+  counter-increment: track;
+}
+.album-card__popover li::before {
+  content: counter(track) ".";
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+  min-width: 18px;
+  flex-shrink: 0;
+}
+.album-card__popover-song {
+  flex: 1;
+  min-width: 0;
+}
+.album-card__popover-song-main {
+  display: block;
+  font-weight: 600;
+  color: var(--text);
+}
+.album-card__popover-song-sub {
+  display: block;
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 1px;
+}
+@media (max-width: 760px) {
+  .album-card__popover { display: none; }
+}
+
+/* Sticky action footer for the album-select phase. Pinned to the viewport bottom so
+   the Start button is always reachable, no matter how the last row of tiles fills out. */
+#phase-select { padding-bottom: 96px; }
+.select-actions {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 12px clamp(14px, 4vw, 32px);
+  background: rgba(10, 10, 10, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--border);
+}
+.select-actions__count {
+  color: var(--text-dim);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
 }
 @media (max-width: 500px) {
-  .select-actions {
-    justify-content: stretch;
-  }
-  .select-actions #startBtn {
-    width: 100%;
-  }
+  .select-actions { padding: 10px 14px; }
+  .select-actions__count { font-size: 12px; }
 }
 .checkbox {
   display: inline-flex;
@@ -319,6 +432,16 @@ main {
   height: 18px;
   accent-color: var(--accent);
   cursor: pointer;
+}
+
+/* Visible focus indicator for all interactive controls. The album-card has its
+   own outline rule via :has(input:focus-visible). */
+.btn:focus-visible,
+.view-toggle__btn:focus-visible,
+.card:focus-visible,
+.official-link:focus-visible {
+  outline: 2px solid var(--accent-hover);
+  outline-offset: 2px;
 }
 
 /* Buttons */
@@ -346,6 +469,18 @@ main {
   border-color: var(--accent-hover);
   transform: translateY(-1px);
   box-shadow: var(--shadow-glow);
+}
+.btn--primary:disabled {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+  color: var(--text-dim);
+  cursor: not-allowed;
+}
+.btn--primary:disabled:hover {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+  transform: none;
+  box-shadow: none;
 }
 .btn--ghost {
   border-color: var(--border-strong);
@@ -512,6 +647,11 @@ progress::-moz-progress-bar { background: var(--accent); }
   font-weight: 700;
   line-height: 1.35;
 }
+.card__translation {
+  font-size: 13px;
+  color: var(--text-dim);
+  font-weight: 500;
+}
 .card__album {
   font-size: 13px;
   color: var(--text-dim);
@@ -613,6 +753,12 @@ progress::-moz-progress-bar { background: var(--accent); }
   line-height: 1.35;
   word-break: break-word;
 }
+.podium-card__translation {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-weight: 500;
+  margin-top: -2px;
+}
 .podium-card__album {
   font-size: 12px;
   color: var(--text-dim);
@@ -654,6 +800,14 @@ progress::-moz-progress-bar { background: var(--accent); }
 .result-cell__title {
   font-weight: 600;
   font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.result-cell__translation {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -779,6 +933,7 @@ progress::-moz-progress-bar { background: var(--accent); }
   display: block;
 }
 [data-view="compact"] .result-cell__album { display: none; }
+[data-view="compact"] .result-cell__translation { display: none; }
 
 /* Dialog */
 .dialog {
