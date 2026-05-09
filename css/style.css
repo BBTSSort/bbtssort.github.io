@@ -158,8 +158,14 @@ main {
 }
 .phase__intro {
   color: var(--text-dim);
-  margin-bottom: 32px;
+  margin-bottom: 4px;
   white-space: nowrap;
+}
+.phase__note {
+  color: var(--text-dim);
+  font-size: 12px;
+  font-style: italic;
+  margin-bottom: 16px;
 }
 @media (max-width: 760px) {
   .phase__intro { white-space: normal; }
@@ -679,7 +685,9 @@ progress::-moz-progress-bar { background: var(--accent); }
   color: var(--text-dim);
   padding: 6px 14px;
   border-radius: 5px;
-  font: 500 13px/1 inherit;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1;
   cursor: pointer;
   transition: all var(--duration) var(--easing);
 }

@@ -174,9 +174,13 @@ export const ALBUMS = [...RAW_ALBUMS].sort((a, b) => a.year - b.year);
 
 export function buildSongList(selectedAlbumIds) {
   const songs = [];
+  const seen = new Set();
   for (const album of ALBUMS) {
     if (!selectedAlbumIds.has(album.id)) continue;
     for (const title of album.songs) {
+      const key = title.trim().toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
       songs.push({ title, album });
     }
   }
