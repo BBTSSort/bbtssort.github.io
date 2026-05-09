@@ -19,7 +19,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
+html, body { margin: 0; padding: 0; overflow-x: clip; }
 
 body {
   background: var(--bg);
@@ -146,6 +146,9 @@ main {
   color: var(--text-dim);
   margin-bottom: 32px;
   white-space: nowrap;
+}
+@media (max-width: 760px) {
+  .phase__intro { white-space: normal; }
 }
 .phase__heading {
   font-size: 18px;
