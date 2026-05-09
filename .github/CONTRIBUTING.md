@@ -98,4 +98,21 @@ for (const a of ALBUMS) console.log(a.year, '-', a.title, '(' + a.songs.length +
 "
 ```
 
+The output should look similar to this:
+
+```
+10 albums
+78 songs total
+2017 - Limited Edition Single (会場限定版シングル) (2 songs)
+2017 - SCREAMING RHAPSODY (7 songs)
+2018 - AN ALIEN'S PORTRAIT (12 songs)
+2019 - Noisy Night Fever (12 songs)
+2021 - Broken By The Scream 〜extended〜 (Limited Edition) (5 songs)
+2022 - RISE into CHAOS【初回盤】 (12 songs)
+2023 - Whitewater Park【Type-A】 (6 songs)
+2023 - Whitewater Park【Type-B】 (6 songs)
+2024 - ReMake Them Joy (5 songs)
+2025 - Solar Strain (11 songs)
+```
+
 If the script throws an error, you have a syntax issue in `data.js` — usually a missing comma or unclosed quote.
