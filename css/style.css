@@ -84,12 +84,6 @@ button { font: inherit; }
 .phase-header__text .phase__intro {
   margin-bottom: 0;
 }
-@media (max-width: 600px) {
-  .phase-header {
-    flex-direction: column;
-  }
-}
-
 .official-link {
   display: inline-flex;
   align-items: center;
@@ -124,6 +118,26 @@ button { font: inherit; }
 }
 .official-link:hover .official-link__arrow {
   transform: translateX(2px);
+}
+
+@media (max-width: 600px) {
+  .phase-header {
+    flex-direction: column-reverse;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  .official-link {
+    align-self: stretch;
+    justify-content: center;
+    margin: -12px -14px 0;
+    padding: 10px 16px;
+    border-radius: 0;
+    border: 0;
+  }
+  .official-link:hover {
+    transform: none;
+    border: 0;
+  }
 }
 
 /* Layout */
