@@ -247,6 +247,14 @@ main {
   border: 1px solid var(--border);
   border-radius: var(--radius);
 }
+@media (max-width: 500px) {
+  .select-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .select-actions #startBtn { margin-left: 0; }
+}
 .checkbox {
   display: inline-flex;
   align-items: center;
@@ -359,10 +367,11 @@ progress::-moz-progress-bar { background: var(--accent); }
 }
 @media (max-width: 760px) {
   .cards {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 8px;
   }
   .cards__middle {
+    grid-column: 1 / -1;
     order: 2;
     flex-direction: row !important;
     justify-content: center;
@@ -374,24 +383,20 @@ progress::-moz-progress-bar { background: var(--accent); }
   }
   .card {
     min-height: 0;
-    padding: 10px;
-    gap: 12px;
-    flex-direction: row;
-    text-align: left;
-    align-items: center;
+    padding: 8px;
+    gap: 8px;
   }
   .card__img {
-    width: 80px;
-    max-width: 80px;
-    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
   }
   .card__text { gap: 2px; }
   .card__title {
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.25;
   }
   .card__album {
-    font-size: 11px;
+    font-size: 10px;
   }
   .prompt {
     font-size: 14px;
