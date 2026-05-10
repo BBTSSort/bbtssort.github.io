@@ -380,7 +380,7 @@ main {
   transform: translateX(4px);
 }
 .album-card-wrap:hover .album-card__popover,
-.album-card-wrap:focus-within .album-card__popover {
+.album-card-wrap:has(:focus-visible) .album-card__popover {
   opacity: 1;
   visibility: visible;
   transform: translateX(0);
