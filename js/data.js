@@ -152,7 +152,10 @@ const RAW_ALBUMS = [
     songs: [
       { title: "Rising sun feat.サンシャイン池崎", translation: "Rising sun feat. Sunshine Ikezaki" },
       { title: "くちびるにロマンス", translation: "Kuchibiru ni Romance" },
-      { title: "陽炎 feat.Isam (from MAKE MY DAY) ＆アイガーゴイル(from アイリフドーパ)", translation: "Kagerou feat. Isam (from MAKE MY DAY) & Eigergoyle (from AILIFDOPA)" },
+      {
+        title: "陽炎 feat.Isam (from MAKE MY DAY) ＆アイガーゴイル(from アイリフドーパ)",
+        translation: "Kagerou feat. Isam (from MAKE MY DAY) & Eigergoyle (from AILIFDOPA)",
+      },
       { title: "荒れた海路はキミ日和", translation: "Areta Kairo wa Kimi Biyori" },
       { title: "ライカ ライカ", translation: "Laika Laika" },
       { title: "パノラマ (Live ver.)", translation: "Panorama (Live ver.)" },
@@ -166,7 +169,10 @@ const RAW_ALBUMS = [
     songs: [
       { title: "Rising sun feat.サンシャイン池崎", translation: "Rising sun feat. Sunshine Ikezaki" },
       { title: "くちびるにロマンス", translation: "Kuchibiru ni Romance" },
-      { title: "陽炎 feat.Isam（from MAKE MY DAY）＆アイガーゴイル（from アイリフドーパ）", translation: "Kagerou feat. Isam (from MAKE MY DAY) & Eigergoyle (from AILIFDOPA)" },
+      {
+        title: "陽炎 feat.Isam（from MAKE MY DAY）＆アイガーゴイル（from アイリフドーパ）",
+        translation: "Kagerou feat. Isam (from MAKE MY DAY) & Eigergoyle (from AILIFDOPA)",
+      },
       { title: "荒れた海路はキミ日和", translation: "Areta Kairo wa Kimi Biyori" },
       { title: "ライカ ライカ", translation: "Laika Laika" },
       { title: "ボクらの未来 (Live ver.)", translation: "Bokura no Mirai (Live ver.)" },

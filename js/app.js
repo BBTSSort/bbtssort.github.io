@@ -40,12 +40,15 @@ const REGULAR_ALBUMS = ALBUMS.filter((a) => !a.single);
 const SINGLES_TILE_ID = "__singles__";
 
 // Synthetic tile that bundles all singles. Always pinned to the end of the grid.
-const SINGLES_TILE = SINGLES.length === 0 ? null : {
-  id: SINGLES_TILE_ID,
-  title: "Singles",
-  cover: "img/bandphoto.jpg",
-  songs: SINGLES.flatMap((s) => s.songs),
-};
+const SINGLES_TILE =
+  SINGLES.length === 0
+    ? null
+    : {
+        id: SINGLES_TILE_ID,
+        title: "Singles",
+        cover: "img/bandphoto.jpg",
+        songs: SINGLES.flatMap((s) => s.songs),
+      };
 
 function gridEntries() {
   const albums = albumSort === "desc" ? [...REGULAR_ALBUMS].reverse() : REGULAR_ALBUMS;
@@ -59,9 +62,7 @@ function showPhase(name) {
 }
 
 function escapeHTML(s) {
-  return s.replace(/[&<>"']/g, (c) =>
-    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
-  );
+  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 }
 
 function fullSongTitle(item) {
@@ -411,9 +412,7 @@ function setupResultsPhase() {
 
   els.rawTextBtn.addEventListener("click", () => {
     const ranked = sort.results();
-    els.rawText.value = ranked
-      .map(({ rank, item }) => `${rank}. ${fullSongTitle(item)} — ${item.album.title}`)
-      .join("\n");
+    els.rawText.value = ranked.map(({ rank, item }) => `${rank}. ${fullSongTitle(item)} — ${item.album.title}`).join("\n");
     els.rawDialog.showModal();
   });
   els.copyBtn.addEventListener("click", async () => {

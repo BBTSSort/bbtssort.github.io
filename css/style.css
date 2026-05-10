@@ -19,16 +19,35 @@
   --easing: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-*, *::before, *::after { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; overflow-x: clip; }
-html { scroll-padding-bottom: 96px; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: clip;
+}
+html {
+  scroll-padding-bottom: 96px;
+}
 
 body {
   background: var(--bg);
   color: var(--text);
-  font: 16px/1.5 "Helvetica Neue", Helvetica, Arial,
-    "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN",
-    "メイリオ", Meiryo, sans-serif;
+  font:
+    16px/1.5 "Helvetica Neue",
+    Helvetica,
+    Arial,
+    "游ゴシック",
+    YuGothic,
+    "ヒラギノ角ゴ ProN W3",
+    "Hiragino Kaku Gothic ProN",
+    "メイリオ",
+    Meiryo,
+    sans-serif;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   position: relative;
@@ -39,9 +58,7 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: radial-gradient(ellipse 100% 75% at 50% -10%,
-              var(--accent-bloom),
-              transparent 70%);
+  background: radial-gradient(ellipse 100% 75% at 50% -10%, var(--accent-bloom), transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -63,13 +80,32 @@ main {
   z-index: 1;
 }
 
-h1, h2, h3, p, ol, ul { margin: 0; }
-ol, ul { padding: 0; list-style: none; }
+h1,
+h2,
+h3,
+p,
+ol,
+ul {
+  margin: 0;
+}
+ol,
+ul {
+  padding: 0;
+  list-style: none;
+}
 
-a { color: var(--accent); text-decoration: none; transition: color var(--duration) var(--easing); }
-a:hover { color: var(--accent-hover); }
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color var(--duration) var(--easing);
+}
+a:hover {
+  color: var(--accent-hover);
+}
 
-button { font: inherit; }
+button {
+  font: inherit;
+}
 
 /* Page header (album-select phase): title on the left, Official Site CTA on the right */
 .phase-header {
@@ -97,10 +133,11 @@ button { font: inherit; }
   font-weight: 600;
   font-size: 14px;
   flex-shrink: 0;
-  transition: border-color var(--duration) var(--easing),
-              color var(--duration) var(--easing),
-              background var(--duration) var(--easing),
-              transform var(--duration) var(--easing);
+  transition:
+    border-color var(--duration) var(--easing),
+    color var(--duration) var(--easing),
+    background var(--duration) var(--easing),
+    transform var(--duration) var(--easing);
 }
 .official-link:hover {
   border-color: var(--accent);
@@ -148,7 +185,9 @@ main {
   margin: 0 auto;
   padding: 32px 24px 80px;
 }
-.phase[hidden] { display: none; }
+.phase[hidden] {
+  display: none;
+}
 .phase__title {
   font-family: "Bebas Neue", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: clamp(38px, 6vw, 60px);
@@ -170,8 +209,12 @@ main {
   margin-bottom: 16px;
 }
 @media (max-width: 760px) {
-  .phase__intro { white-space: normal; }
-  #exportImgBtn { display: none; }
+  .phase__intro {
+    white-space: normal;
+  }
+  #exportImgBtn {
+    display: none;
+  }
 }
 .phase__heading {
   font-size: 18px;
@@ -242,10 +285,11 @@ main {
   border-radius: var(--radius);
   overflow: hidden;
   cursor: pointer;
-  transition: transform var(--duration) var(--easing),
-              border-color var(--duration) var(--easing),
-              box-shadow var(--duration) var(--easing),
-              opacity var(--duration) var(--easing);
+  transition:
+    transform var(--duration) var(--easing),
+    border-color var(--duration) var(--easing),
+    box-shadow var(--duration) var(--easing),
+    opacity var(--duration) var(--easing);
 }
 .album-card:hover {
   border-color: var(--accent);
@@ -297,7 +341,9 @@ main {
   opacity: 0.4;
   filter: grayscale(0.8);
 }
-.album-card--off:hover { opacity: 0.7; }
+.album-card--off:hover {
+  opacity: 0.7;
+}
 
 /* Tracklist popover that appears above an album card on hover/focus */
 .album-card-wrap {
@@ -323,9 +369,10 @@ main {
   visibility: hidden;
   transform: translateX(-4px);
   pointer-events: none;
-  transition: opacity var(--duration) var(--easing),
-              transform var(--duration) var(--easing),
-              visibility 0s linear var(--duration);
+  transition:
+    opacity var(--duration) var(--easing),
+    transform var(--duration) var(--easing),
+    visibility 0s linear var(--duration);
 }
 .album-card-wrap[data-side="right"] .album-card__popover {
   left: auto;
@@ -338,9 +385,10 @@ main {
   visibility: visible;
   transform: translateX(0);
   pointer-events: auto;
-  transition: opacity var(--duration) var(--easing) 500ms,
-              transform var(--duration) var(--easing) 500ms,
-              visibility 0s linear 500ms;
+  transition:
+    opacity var(--duration) var(--easing) 500ms,
+    transform var(--duration) var(--easing) 500ms,
+    visibility 0s linear 500ms;
 }
 .album-card__popover-title {
   font-weight: 700;
@@ -388,12 +436,16 @@ main {
   margin-top: 1px;
 }
 @media (max-width: 760px) {
-  .album-card__popover { display: none; }
+  .album-card__popover {
+    display: none;
+  }
 }
 
 /* Sticky action footer for the album-select phase. Pinned to the viewport bottom so
    the Start button is always reachable, no matter how the last row of tiles fills out. */
-#phase-select { padding-bottom: 96px; }
+#phase-select {
+  padding-bottom: 96px;
+}
 .select-actions {
   position: fixed;
   left: 0;
@@ -417,8 +469,12 @@ main {
   letter-spacing: 0.01em;
 }
 @media (max-width: 500px) {
-  .select-actions { padding: 10px 14px; }
-  .select-actions__count { font-size: 12px; }
+  .select-actions {
+    padding: 10px 14px;
+  }
+  .select-actions__count {
+    font-size: 12px;
+  }
 }
 .checkbox {
   display: inline-flex;
@@ -503,7 +559,9 @@ main {
   font-size: 13px;
 }
 
-#startBtn { margin-left: auto; }
+#startBtn {
+  margin-left: auto;
+}
 
 /* Sort phase */
 .progress {
@@ -531,13 +589,18 @@ progress {
   border-radius: 3px;
   overflow: hidden;
 }
-progress::-webkit-progress-bar { background: var(--surface); border-radius: 3px; }
+progress::-webkit-progress-bar {
+  background: var(--surface);
+  border-radius: 3px;
+}
 progress::-webkit-progress-value {
   background: linear-gradient(90deg, var(--accent), var(--accent-hover));
   border-radius: 3px;
   transition: width var(--duration) var(--easing);
 }
-progress::-moz-progress-bar { background: var(--accent); }
+progress::-moz-progress-bar {
+  background: var(--accent);
+}
 
 .prompt {
   text-align: center;
@@ -628,7 +691,9 @@ progress::-moz-progress-bar { background: var(--accent); }
   transform: translateY(-4px);
   box-shadow: var(--shadow-glow);
 }
-.card:active { transform: translateY(-1px); }
+.card:active {
+  transform: translateY(-1px);
+}
 .card__img {
   width: 240px;
   max-width: 100%;
@@ -699,7 +764,9 @@ progress::-moz-progress-bar { background: var(--accent); }
   margin-bottom: 24px;
 }
 @media (max-width: 720px) {
-  .podium { grid-template-columns: 1fr; }
+  .podium {
+    grid-template-columns: 1fr;
+  }
 }
 
 .podium-card {
@@ -734,11 +801,21 @@ progress::-moz-progress-bar { background: var(--accent); }
   border-color: #ffd24a;
   box-shadow: 0 0 32px rgba(255, 210, 74, 0.18);
 }
-.podium-card--1 .podium-card__rank { color: #ffd24a; }
-.podium-card--2 { border-color: #c8c8d0; }
-.podium-card--2 .podium-card__rank { color: #c8c8d0; }
-.podium-card--3 { border-color: #d28a55; }
-.podium-card--3 .podium-card__rank { color: #d28a55; }
+.podium-card--1 .podium-card__rank {
+  color: #ffd24a;
+}
+.podium-card--2 {
+  border-color: #c8c8d0;
+}
+.podium-card--2 .podium-card__rank {
+  color: #c8c8d0;
+}
+.podium-card--3 {
+  border-color: #d28a55;
+}
+.podium-card--3 .podium-card__rank {
+  color: #d28a55;
+}
 
 .podium-card__img {
   width: 100%;
@@ -853,7 +930,9 @@ progress::-moz-progress-bar { background: var(--accent); }
   cursor: pointer;
   transition: all var(--duration) var(--easing);
 }
-.view-toggle__btn:hover { color: var(--text); }
+.view-toggle__btn:hover {
+  color: var(--text);
+}
 .view-toggle__btn.is-active {
   background: var(--accent);
   color: #fff;
@@ -887,9 +966,15 @@ progress::-moz-progress-bar { background: var(--accent); }
   top: -14px;
   border-width: 2px;
 }
-[data-view="compact"] .podium-card__img { max-width: 130px; }
-[data-view="compact"] .podium-card__title { font-size: 13px; }
-[data-view="compact"] .podium-card__album { font-size: 11px; }
+[data-view="compact"] .podium-card__img {
+  max-width: 130px;
+}
+[data-view="compact"] .podium-card__title {
+  font-size: 13px;
+}
+[data-view="compact"] .podium-card__album {
+  font-size: 11px;
+}
 
 [data-view="compact"] .results-grid {
   display: block;
@@ -897,7 +982,9 @@ progress::-moz-progress-bar { background: var(--accent); }
   column-gap: 28px;
 }
 @media (max-width: 600px) {
-  [data-view="compact"] .results-grid { columns: 1; }
+  [data-view="compact"] .results-grid {
+    columns: 1;
+  }
 }
 [data-view="compact"] .result-cell {
   display: flex;
@@ -909,7 +996,9 @@ progress::-moz-progress-bar { background: var(--accent); }
   border-radius: 0;
   break-inside: avoid;
 }
-[data-view="compact"] .result-cell__img { display: none; }
+[data-view="compact"] .result-cell__img {
+  display: none;
+}
 [data-view="compact"] .result-cell__rank {
   font-size: 12px;
   font-weight: 600;
@@ -918,7 +1007,9 @@ progress::-moz-progress-bar { background: var(--accent); }
   min-width: 28px;
   flex-shrink: 0;
 }
-[data-view="compact"] .result-cell__rank::after { content: "."; }
+[data-view="compact"] .result-cell__rank::after {
+  content: ".";
+}
 [data-view="compact"] .result-cell__text {
   flex: 1;
   min-width: 0;
@@ -932,8 +1023,12 @@ progress::-moz-progress-bar { background: var(--accent); }
   text-overflow: ellipsis;
   display: block;
 }
-[data-view="compact"] .result-cell__album { display: none; }
-[data-view="compact"] .result-cell__translation { display: none; }
+[data-view="compact"] .result-cell__album {
+  display: none;
+}
+[data-view="compact"] .result-cell__translation {
+  display: none;
+}
 
 /* Dialog */
 .dialog {
@@ -961,7 +1056,12 @@ progress::-moz-progress-bar { background: var(--accent); }
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 12px;
-  font: 13px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font:
+    13px/1.6 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
   resize: vertical;
   margin-bottom: 16px;
 }
