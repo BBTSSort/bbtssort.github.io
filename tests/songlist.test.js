@@ -1,6 +1,6 @@
 import { test, describe } from "node:test";
 import assert from "node:assert/strict";
-import { ALBUMS, buildSongList } from "../js/data.js";
+import { ALBUMS, buildSongList } from "../js/songlist.js";
 
 describe("ALBUMS export", () => {
   test("is a non-empty array", () => {

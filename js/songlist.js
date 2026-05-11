@@ -7,7 +7,7 @@
 //              title       — the song's primary title (Japanese for most BBTS tracks)
 //              translation — (optional) English / romaji rendering shown as subtext
 //            Duplicate titles across albums are fine; each instance is treated separately.
-//   single - (optional) true if this is a standalone single — gets bundled into the
+//   isSingle - (optional) true if this is a standalone single — gets bundled into the
 //            "Singles" tile on the album grid instead of getting its own tile.
 //
 // Albums are listed alphabetically by title in this file for easier maintenance.
