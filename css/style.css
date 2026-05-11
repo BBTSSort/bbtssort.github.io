@@ -8,6 +8,8 @@
   --text-dim: #9a9a9a;
   --accent: #2e5cb8;
   --accent-hover: #4576d4;
+  --accent-bg: #2e5cb8;
+  --accent-bg-hover: #264a99;
   --accent-glow: rgba(46, 92, 184, 0.32);
   --accent-bloom: rgba(63, 116, 212, 0.52);
   --radius: 14px;
@@ -516,13 +518,13 @@ main {
   color: var(--text);
 }
 .btn--primary {
-  background: var(--accent);
+  background: var(--accent-bg);
   color: #fff;
-  border-color: var(--accent);
+  border-color: var(--accent-bg);
 }
 .btn--primary:hover {
-  background: var(--accent-hover);
-  border-color: var(--accent-hover);
+  background: var(--accent-bg-hover);
+  border-color: var(--accent-bg-hover);
   transform: translateY(-1px);
   box-shadow: var(--shadow-glow);
 }
@@ -952,7 +954,7 @@ progress::-moz-progress-bar {
   color: var(--text);
 }
 .view-toggle__btn.is-active {
-  background: var(--accent);
+  background: var(--accent-bg);
   color: #fff;
 }
 
