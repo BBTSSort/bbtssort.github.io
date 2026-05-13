@@ -22,38 +22,6 @@ The site uses ES modules, which require an HTTP server (won't work via `file://`
 
 `npm test` will catch most data-shape regressions before you push: missing required fields on an album entry, non-unique album ids, malformed song objects, broken `buildSongList` dedup, sort-engine misbehavior, etc. If you change anything in `js/data.js` or `js/sort.js`, run it.
 
-## Verifying your data
-
-A quick sanity check from the command line:
-
-```bash
-node --input-type=module -e "
-import { ALBUMS, buildSongList } from './js/data.js';
-console.log(ALBUMS.length, 'albums');
-console.log(ALBUMS.reduce((n, a) => n + a.songs.length, 0), 'songs total');
-for (const a of ALBUMS) console.log(a.year ?? '----', '-', a.title, '(' + a.songs.length + ' songs)' + (a.single ? ' [single]' : ''));
-"
-```
-
-The output should look similar to this:
-
-```
-10 albums
-78 songs total
-2017 - Limited Edition Single (会場限定版シングル) (2 songs)
-2017 - SCREAMING RHAPSODY (7 songs)
-2018 - AN ALIEN'S PORTRAIT (12 songs)
-2019 - Noisy Night Fever (12 songs)
-2021 - Broken By The Scream 〜extended〜 (Limited Edition) (5 songs)
-2022 - RISE into CHAOS【初回盤】 (12 songs)
-2023 - Whitewater Park【Type-A】 (6 songs)
-2023 - Whitewater Park【Type-B】 (6 songs)
-2024 - ReMake Them Joy (5 songs)
-2025 - Solar Strain (11 songs)
-```
-
-If the script throws an error, you have a syntax issue in `data.js`, usually a missing comma or unclosed quote.
-
 ## Image sizes
 
 When adding new cover art or photos, target these dimensions. The site already displays at much smaller sizes, so larger sources just waste bandwidth.
